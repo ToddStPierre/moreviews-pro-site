@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>More Views Pro — The IT & Marketing Partner for Local Business</title>
+<meta name="description" content="One local team runs your IT and your marketing. Networks that don't drop, backups that actually run, and marketing that brings in calls — for Coachella Valley businesses.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#101418;
+    --ink-soft:#4a5561;
+    --paper:#ffffff;
+    --paper-tint:#f5f7f9;
+    --line:#e3e8ec;
+    --brand:#0a5c46;
+    --brand-bright:#12a37e;
+    --accent:#e8622c;
+    --accent-soft:#fdece2;
+    --brand-soft:#e6f3ee;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  html,body{max-width:100%;overflow-x:hidden;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Sora',system-ui,sans-serif;line-height:1.15;margin:0;}
+  p{margin:0;}
+  a{color:inherit;}
+  img{max-width:100%;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--brand);
+    font-weight:500;
+  }
+
+  /* Header */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:1120px;margin:0 auto;gap:16px;}
+  .logo{font-family:'Sora';font-weight:800;font-size:19px;letter-spacing:-.01em;flex:none;}
+  .logo span{color:var(--brand-bright);}
+  .nav-links{display:flex;gap:28px;font-size:14.5px;font-weight:600;}
+  .nav-links a:hover{color:var(--brand);}
+  .nav-cta{display:flex;align-items:center;gap:14px;flex:none;}
+  .phone-link{font-weight:700;font-size:15px;white-space:nowrap;}
+  @media (max-width:820px){ .nav-links{display:none;} }
+  @media (max-width:520px){
+    .nav{padding:14px 16px;}
+    .logo{font-size:16px;}
+    .nav-cta .btn{display:none;}
+  }
+
+  /* Buttons */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:15px 26px;border-radius:10px;
+    font-weight:700;font-size:15.5px;
+    text-decoration:none;border:none;cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary{
+    background:linear-gradient(180deg,var(--brand-bright),var(--brand));
+    color:#fff;
+    box-shadow:0 10px 24px -8px rgba(10,92,70,.55);
+  }
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 14px 28px -8px rgba(10,92,70,.65);}
+  .btn-ghost{
+    background:#fff;color:var(--ink);border:1.5px solid var(--line);
+  }
+  .btn-ghost:hover{border-color:var(--brand);color:var(--brand);}
+  .btn-block{width:100%;}
+
+  /* Hero */
+  .hero{
+    position:relative;overflow:hidden;
+    padding:76px 0 60px;
+    background:
+      radial-gradient(600px 320px at 12% 0%, #e6f3ee 0%, transparent 60%),
+      radial-gradient(520px 380px at 92% 10%, #fdece2 0%, transparent 55%),
+      var(--paper);
+  }
+  .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center;}
+  @media (max-width:900px){ .hero-grid{grid-template-columns:1fr;gap:36px;} }
+  .hero h1{font-size:clamp(32px,4.4vw,52px);letter-spacing:-.02em;margin-top:14px;}
+  .hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--brand),var(--brand-bright));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .hero-sub{margin-top:18px;font-size:18px;color:var(--ink-soft);max-width:54ch;}
+  .hero-ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px;align-items:center;}
+  .risk-line{margin-top:14px;font-size:14px;color:var(--ink-soft);}
+  .risk-line b{color:var(--ink);}
+
+  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:44px;padding-top:28px;border-top:1px solid var(--line);}
+  @media (max-width:700px){ .stat-row{grid-template-columns:repeat(2,1fr);} }
+  .stat b{display:block;font-family:'Sora';font-size:23px;font-weight:700;color:var(--brand);}
+  .stat span{font-size:13px;color:var(--ink-soft);}
+
+  .hero-card{
+    background:#fff;border:1px solid var(--line);border-radius:18px;
+    padding:28px;box-shadow:0 30px 60px -30px rgba(16,20,24,.25);
+  }
+  .hero-card h3{font-size:17px;}
+  .hero-card p{color:var(--ink-soft);font-size:14.5px;margin-top:6px;}
+  .hero-card ul{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:12px;}
+  .hero-card li{display:flex;gap:10px;font-size:14.5px;font-weight:600;}
+  .check{flex:none;width:20px;height:20px;border-radius:50%;background:var(--brand-soft);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:12px;}
+
+  /* Section shell */
+  section{padding:76px 0;}
+  .section-head{max-width:680px;margin-bottom:44px;}
+  .section-head h2{font-size:clamp(26px,3.2vw,36px);margin-top:12px;letter-spacing:-.01em;}
+  .section-head p{margin-top:14px;color:var(--ink-soft);font-size:16.5px;}
+  .alt{background:var(--paper-tint);}
+
+  /* Value prop */
+  .value-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  @media (max-width:820px){ .value-grid{grid-template-columns:1fr;} }
+  .value-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px;}
+  .value-card .num{font-family:'JetBrains Mono';color:var(--accent);font-weight:600;font-size:13px;}
+  .value-card h3{margin-top:10px;font-size:18px;}
+  .value-card p{margin-top:8px;color:var(--ink-soft);font-size:15px;}
+
+  /* Service department */
+  .dept{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px;align-items:start;}
+  @media (max-width:900px){ .dept{grid-template-columns:1fr;} }
+  .dept-intro .eyebrow{margin-bottom:10px;}
+  .dept-intro h2{font-size:clamp(24px,3vw,32px);}
+  .dept-intro p{margin-top:14px;color:var(--ink-soft);font-size:16px;}
+  .service-list{display:grid;gap:14px;margin-top:26px;}
+  .service-card{
+    background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:18px 20px;display:flex;gap:14px;align-items:flex-start;
+  }
+  .dot{flex:none;width:9px;height:9px;border-radius:50%;background:var(--brand-bright);margin-top:7px;}
+  .service-card h4{font-size:15.5px;font-weight:700;}
+  .service-card p{margin-top:4px;color:var(--ink-soft);font-size:14.5px;}
+  #marketing .dot{background:var(--accent);}
+
+  /* Local Spotlight */
+  .spotlight{
+    background:linear-gradient(135deg,#0a5c46,#0d7256);
+    border-radius:22px;color:#fff;padding:48px;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;
+  }
+  @media (max-width:860px){ .spotlight{grid-template-columns:1fr;padding:32px;} }
+  .spotlight .eyebrow{color:#bfe9d8;}
+  .spotlight h2{color:#fff;font-size:clamp(24px,3vw,32px);margin-top:12px;}
+  .spotlight p{color:#d6ece3;margin-top:14px;font-size:16px;}
+  .spotlight-stats{display:flex;gap:28px;margin-top:24px;flex-wrap:wrap;}
+  .spotlight-stats div b{display:block;font-family:'Sora';font-size:22px;}
+  .spotlight-stats div span{font-size:13px;color:#bfe9d8;}
+  .spotlight-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:16px;padding:26px;}
+  .spotlight-card b{font-family:'Sora';font-size:28px;display:block;}
+  .spotlight-card span{font-size:13px;color:#bfe9d8;}
+  .spotlight .btn-primary{background:#fff;color:var(--brand);box-shadow:none;margin-top:18px;}
+  .spotlight .btn-primary:hover{background:#f2f2f2;}
+
+  /* Form */
+  .form-shell{
+    background:#fff;border:1px solid var(--line);border-radius:20px;
+    padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:44px;
+  }
+  @media (max-width:860px){ .form-shell{grid-template-columns:1fr;padding:26px;} }
+  .form-shell h2{font-size:26px;}
+  .form-shell > div:first-child p{margin-top:14px;color:var(--ink-soft);font-size:15.5px;}
+  .form-shell ul{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:12px;}
+  .form-shell li{display:flex;gap:10px;font-size:14.5px;color:var(--ink-soft);}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .field input, .field select{
+    width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:9px;
+    font-family:inherit;font-size:15px;background:var(--paper-tint);
+  }
+  .field input:focus, .field select:focus{outline:2px solid var(--brand-bright);border-color:transparent;}
+  .form-micro{margin-top:12px;font-size:13px;color:var(--ink-soft);text-align:center;}
+
+  /* FAQ */
+  .faq{max-width:820px;}
+  details{border-bottom:1px solid var(--line);padding:20px 0;}
+  summary{
+    font-weight:700;font-size:16.5px;cursor:pointer;list-style:none;
+    display:flex;justify-content:space-between;align-items:center;gap:16px;
+  }
+  summary::-webkit-details-marker{display:none;}
+  summary .plus{font-size:20px;color:var(--brand);flex:none;transition:transform .2s ease;}
+  details[open] summary .plus{transform:rotate(45deg);}
+  details p{margin-top:12px;color:var(--ink-soft);font-size:15.5px;max-width:70ch;}
+
+  /* Service area */
+  .city-grid{display:flex;flex-wrap:wrap;gap:12px;}
+  .city-chip{
+    background:#fff;border:1px solid var(--line);border-radius:999px;
+    padding:10px 18px;font-weight:600;font-size:14.5px;
+  }
+
+  /* Final CTA */
+  .final-cta{
+    background:var(--ink);color:#fff;border-radius:22px;padding:56px;text-align:center;
+  }
+  .final-cta h2{color:#fff;font-size:clamp(26px,3.4vw,38px);}
+  .final-cta p{color:#c7cdd3;margin-top:14px;font-size:17px;max-width:56ch;margin-left:auto;margin-right:auto;}
+  .final-ctas{display:flex;gap:14px;justify-content:center;margin-top:28px;flex-wrap:wrap;}
+  .final-cta .btn-ghost{background:transparent;color:#fff;border-color:#3a4148;}
+  .final-cta .btn-ghost:hover{border-color:#fff;}
+
+  /* Footer */
+  footer{background:var(--paper-tint);border-top:1px solid var(--line);padding:56px 0 28px;}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px;}
+  @media (max-width:760px){ .foot-grid{grid-template-columns:1fr 1fr;} }
+  .foot-grid h5{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);margin-bottom:14px;}
+  .foot-grid ul{list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:14.5px;}
+  .foot-bottom{
+    margin-top:44px;padding-top:22px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    font-size:13.5px;color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">More Views <span>Pro</span></div>
+    <nav class="nav-links">
+      <a href="#it">Business IT</a>
+      <a href="#marketing">Marketing</a>
+      <a href="#local-spotlight">Local Spotlight</a>
+      <a href="#faq">FAQ</a>
+      <a href="#service-area">Service Area</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="phone-link" href="tel:+17608535185">(760) 853-5185</a>
+      <a class="btn btn-primary" href="#assessment" style="padding:11px 18px;font-size:14px;">Get Assessment</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">IT + MARKETING — ONE LOCAL TEAM</span>
+      <h1>Stop juggling five vendors. <em>Run your IT and your marketing through one local team.</em></h1>
+      <p class="hero-sub">Real technicians keep your network up. Real marketers keep your phone ringing. One number, one team, for Coachella Valley businesses tired of chasing five different vendors for two problems.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="tel:+17608535185">Call Now for a Free Assessment</a>
+        <a class="btn btn-ghost" href="#assessment">Or tell us what you need &rarr;</a>
+      </div>
+      <p class="risk-line"><b>(760) 853-5185</b> — no pressure, no obligation. We'll tell you straight if we're not the right fit.</p>
+
+      <div class="stat-row">
+        <div class="stat"><b>8+ yrs</b><span>Serving the Valley</span></div>
+        <div class="stat"><b>6</b><span>Valley cities served</span></div>
+        <div class="stat"><b>11</b><span>Services under one roof</span></div>
+        <div class="stat"><b>2</b><span>In-house teams, IT &amp; marketing</span></div>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <span class="eyebrow">WHY ONE TEAM</span>
+      <h3 style="margin-top:8px;">What changes when IT and marketing stop pointing fingers</h3>
+      <ul>
+        <li><span class="check">&#10003;</span> One call, not two separate vendors to chase down</li>
+        <li><span class="check">&#10003;</span> The same team that runs your network also runs your website — nobody blames the other guy</li>
+        <li><span class="check">&#10003;</span> A real technician answers when something breaks, not a ticket queue</li>
+        <li><span class="check">&#10003;</span> Decisions move faster because one team already knows your business</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">WHY ONE VENDOR BEATS FIVE</span>
+      <h2>The real cost of splitting your business between vendors</h2>
+      <p>Every business running separate IT and marketing vendors pays the same hidden tax: nobody owns the whole picture, and every problem becomes a game of "call the other guy."</p>
+    </div>
+    <div class="value-grid">
+      <div class="value-card">
+        <span class="num">01</span>
+        <h3>No more finger-pointing</h3>
+        <p>Website's slow, the host blames the network, the IT guy blames the software. When one team runs both, that excuse disappears.</p>
+      </div>
+      <div class="value-card">
+        <span class="num">02</span>
+        <h3>A team that knows your business</h3>
+        <p>Not a new rep every time you call. The same in-house people handle your infrastructure and your growth, visit after visit.</p>
+      </div>
+      <div class="value-card">
+        <span class="num">03</span>
+        <h3>Decisions happen faster</h3>
+        <p>A new landing page needs a server change? A network upgrade affects your VoIP? One team already has both sides of the conversation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="it">
+  <div class="wrap dept">
+    <div class="dept-intro">
+      <span class="eyebrow">BUSINESS IT</span>
+      <h2>Managed IT &amp; infrastructure</h2>
+      <p>Networks that don't drop, backups that actually run, and a real technician answering the phone when something breaks.</p>
+    </div>
+    <div class="service-list">
+      <div class="service-card"><span class="dot"></span><div><h4>Network &amp; Wi-Fi Design</h4><p>Wi-Fi and networks built to handle a full office without dropping — not a router hidden in a closet.</p></div></div>
+      <div class="service-card"><span class="dot"></span><div><h4>Server Installation &amp; Cloud Migration</h4><p>Migrations planned and run so your business doesn't go offline for a weekend to get it done.</p></div></div>
+      <div class="service-card"><span class="dot"></span><div><h4>VPN, Remote Work &amp; Security</h4><p>Your team logs in securely from anywhere, without leaving the front door open.</p></div></div>
+      <div class="service-card"><span class="dot"></span><div><h4>Workstation Deployment &amp; Repair</h4><p>Computers set up, repaired, and kept running, so "my laptop's broken" stops being a two-day problem.</p></div></div>
+      <div class="service-card"><span class="dot"></span><div><h4>Backup, Monitoring &amp; Support</h4><p>Backups that actually run, and someone watching before a small problem becomes a lost week.</p></div></div>
+      <div class="service-card"><span class="dot"></span><div><h4>VoIP &amp; Business Phone Systems</h4><p>Phone systems that work like it's 2026, not one held together with tape and transfers.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="marketing" class="alt">
+  <div class="wrap dept">
+    <div class="dept-intro">
+      <span class="eyebrow">MARKETING &amp; ADVERTISING</span>
+      <h2>A full creative &amp; media team</h2>
+      <p>Marketing built to bring in calls, not just look good — websites, social, ads, print, and video, all from one in-house team.</p>
+    </div>
+    <div class="service-list">
+      <div class="service-card"><span class="dot"></span><div><h4>Website Design, Development &amp; Hosting</h4><p>Sites built to bring in calls, hosted and kept running so it's never "down again."</p></div></div>
+      <div class="service-card"><span class="dot"></span><div><h4>Social Media Management &amp; Content</h4><p>Content and posting handled every week, so your page doesn't go quiet for a month at a time.</p></div></div>
+      <div class="service-card"><span class="dot"></span><div><h4>SEO &amp; Google Ads</h4><p>Show up when local customers search, instead of hoping they find you by accident.</p></div></div>
+      <div class="service-card"><span class="dot"></span><div><h4>Print, Direct Mail &amp; Outdoor</h4><p>Get your name in front of thousands of local homeowners without wondering if anyone saw it.</p></div></div>
+      <div class="service-card"><span class="dot"></span><div><h4>Branding, Video &amp; Creative Production</h4><p>Photo, video, and branding that builds trust before a first-time visitor even calls.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="local-spotlight">
+  <div class="wrap">
+    <div class="spotlight">
+      <div>
+        <span class="eyebrow">LOCAL SPOTLIGHT</span>
+        <h2>Get your business in front of 10,000 valley homeowners</h2>
+        <p>A community-focused advertising campaign: an oversized 6x11" full-color postcard mailed to about 5,000 homeowners in Sun City Palm Desert and another 5,000 in the El Paseo area. Local businesses split the cost of the mailing and share the spotlight.</p>
+        <div class="spotlight-stats">
+          <div><b>10,000</b><span>homeowners reached</span></div>
+          <div><b>2</b><span>valley mailing areas</span></div>
+          <div><b>6x11"</b><span>full-color postcard</span></div>
+        </div>
+        <a class="btn btn-primary" href="tel:+17608535185">Reserve Your Spot</a>
+      </div>
+      <div class="spotlight-card">
+        <span class="eyebrow" style="color:#bfe9d8;">PER SPOT</span>
+        <b>$300</b>
+        <span>2.7" x 2.6" spot on the postcard — 8 spots cover print and mail, the rest is pure reach for your business.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="assessment" class="alt">
+  <div class="wrap">
+    <div class="form-shell">
+      <div>
+        <span class="eyebrow">FREE ASSESSMENT</span>
+        <h2>Not ready to call? Tell us what you need instead.</h2>
+        <p>Fill this out and a real person — not a call center — will get back to you within one business day with a straight answer, not a sales script.</p>
+        <ul>
+          <li><span class="check">&#10003;</span> No obligation, no contract to start</li>
+          <li><span class="check">&#10003;</span> Takes about 90 seconds</li>
+          <li><span class="check">&#10003;</span> We'll tell you honestly if we're not the right fit</li>
+        </ul>
+      </div>
+      <div>
+        <!--
+          TODO (Todd): this form has no live submission endpoint yet.
+          Wire it to a GHL form embed (matches how Local Spotlight outreach
+          already runs through the More Views Pro GHL sub-account) or a
+          Formspree endpoint before this goes live. Right now it only
+          validates in the browser and does not send anywhere.
+        -->
+        <form onsubmit="event.preventDefault(); alert('Form submitted — wiring to a live endpoint (GHL or Formspree) is still needed before this goes live. For now, call (760) 853-5185.');">
+          <div class="field"><label for="name">Name</label><input id="name" type="text" required></div>
+          <div class="field"><label for="business">Business Name</label><input id="business" type="text" required></div>
+          <div class="field"><label for="email">Email</label><input id="email" type="email" required></div>
+          <div class="field"><label for="phone">Phone</label><input id="phone" type="tel" required></div>
+          <div class="field">
+            <label for="need">What do you need?</label>
+            <select id="need" required>
+              <option value="">Select one</option>
+              <option>Business IT</option>
+              <option>Marketing &amp; Advertising</option>
+              <option>Both</option>
+            </select>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Get My Free Assessment</button>
+          <p class="form-micro">We'll call you back within 1 business day. No pressure, no contract required.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">QUESTIONS</span>
+      <h2>Before you call, here's what people usually ask</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>How much does this cost? <span class="plus">+</span></summary>
+        <p>It depends on what you need — a few workstations and Wi-Fi is a different job than a full network migration, and running one social channel is different from paid ads across three. We'll give you a straight number on the call, no guessing games. (Local Spotlight postcard spots are a flat $300 each.)</p>
+      </details>
+      <details>
+        <summary>What actually happens when I call? <span class="plus">+</span></summary>
+        <p>You talk to a real person who works here, not a call center reading a script. We ask what's actually going on, tell you honestly whether we're a fit, and if we are, we map out next steps on that same call.</p>
+      </details>
+      <details>
+        <summary>Do I have to switch everything at once? <span class="plus">+</span></summary>
+        <p>No. Plenty of clients start with just IT or just marketing and add the other side later, once they've seen how we work.</p>
+      </details>
+      <details>
+        <summary>Is my data safe with a third-party IT vendor? <span class="plus">+</span></summary>
+        <p>We run monitored backups and secured remote access, and we don't touch anything without your sign-off. If you have specific compliance requirements, tell us on the call and we'll walk you through exactly how we handle them.</p>
+      </details>
+      <details>
+        <summary>I already like my current IT guy or marketing agency — can I still call? <span class="plus">+</span></summary>
+        <p>Keep them. We're often brought in for the piece nobody's covering — sometimes that grows into more, sometimes it doesn't. No pressure either way.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="service-area" class="alt">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:26px;">
+      <span class="eyebrow">SERVICE AREA</span>
+      <h2>On the ground across the Coachella Valley</h2>
+    </div>
+    <div class="city-grid">
+      <span class="city-chip">Palm Desert</span>
+      <span class="city-chip">Indian Wells</span>
+      <span class="city-chip">La Quinta</span>
+      <span class="city-chip">Rancho Mirage</span>
+      <span class="city-chip">Indio</span>
+      <span class="city-chip">Bermuda Dunes</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="final-cta">
+      <span class="eyebrow" style="color:#9fb0bf;">READY WHEN YOU ARE</span>
+      <h2 style="margin-top:12px;">Ready to bring it all under one roof?</h2>
+      <p>One call gets you a straight answer on your IT, your marketing, or both. No pressure, no obligation.</p>
+      <div class="final-ctas">
+        <a class="btn btn-primary" href="tel:+17608535185">Call (760) 853-5185</a>
+        <a class="btn btn-ghost" href="#assessment">Get a Free Assessment</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="logo">More Views <span>Pro</span></div>
+        <p style="margin-top:12px;color:var(--ink-soft);font-size:14.5px;max-width:32ch;">The IT &amp; marketing partner for Coachella Valley businesses. One vendor, one number to call.</p>
+      </div>
+      <div>
+        <h5>Business IT</h5>
+        <ul>
+          <li><a href="#it">Managed IT</a></li>
+          <li><a href="#it">Networks &amp; Cloud</a></li>
+          <li><a href="#it">Cybersecurity</a></li>
+          <li><a href="#it">Voice AI</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Marketing</h5>
+        <ul>
+          <li><a href="#marketing">Web Design</a></li>
+          <li><a href="#marketing">Social &amp; SEO</a></li>
+          <li><a href="#marketing">Print &amp; Outdoor</a></li>
+          <li><a href="#local-spotlight">Local Spotlight</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <ul>
+          <li><a href="tel:+17608535185">(760) 853-5185</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; 2026 More Views Pro. All rights reserved.</span>
+      <span>Palm Desert · Indian Wells · La Quinta · Rancho Mirage · Indio · Bermuda Dunes</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
