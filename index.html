@@ -243,7 +243,7 @@
       <a href="#service-area">Service Area</a>
     </nav>
     <div class="nav-cta">
-      <a class="phone-link" href="tel:+17608535185">(760) 853-5185</a>
+      <a class="phone-link" href="tel:+17604225475">(760) 422-5475</a>
       <a class="btn btn-primary" href="#assessment" style="padding:11px 18px;font-size:14px;">Get Assessment</a>
     </div>
   </div>
@@ -256,10 +256,10 @@
       <h1>Stop juggling five vendors. <em>Run your IT and your marketing through one local team.</em></h1>
       <p class="hero-sub">Real technicians keep your network up. Real marketers keep your phone ringing. One number, one team, for Coachella Valley businesses tired of chasing five different vendors for two problems.</p>
       <div class="hero-ctas">
-        <a class="btn btn-primary" href="tel:+17608535185">Call Now for a Free Assessment</a>
+        <a class="btn btn-primary" href="tel:+17604225475">Call Now for a Free Assessment</a>
         <a class="btn btn-ghost" href="#assessment">Or tell us what you need &rarr;</a>
       </div>
-      <p class="risk-line"><b>(760) 853-5185</b> — no pressure, no obligation. We'll tell you straight if we're not the right fit.</p>
+      <p class="risk-line"><b>(760) 422-5475</b> — no pressure, no obligation. We'll tell you straight if we're not the right fit.</p>
 
       <div class="stat-row">
         <div class="stat"><b>8+ yrs</b><span>Serving the Valley</span></div>
@@ -356,7 +356,7 @@
           <div><b>2</b><span>valley mailing areas</span></div>
           <div><b>6x11"</b><span>full-color postcard</span></div>
         </div>
-        <a class="btn btn-primary" href="tel:+17608535185">Reserve Your Spot</a>
+        <a class="btn btn-primary" href="tel:+17604225475">Reserve Your Spot</a>
       </div>
       <div class="spotlight-card">
         <span class="eyebrow" style="color:#bfe9d8;">PER SPOT</span>
@@ -382,20 +382,24 @@
       </div>
       <div>
         <!--
-          TODO (Todd): this form has no live submission endpoint yet.
-          Wire it to a GHL form embed (matches how Local Spotlight outreach
-          already runs through the More Views Pro GHL sub-account) or a
-          Formspree endpoint before this goes live. Right now it only
-          validates in the browser and does not send anywhere.
+          Submissions post to Formspree and land at todd@moreviews.pro.
+          NOTE (Todd): Formspree requires a one-time activation the first
+          time a real submission comes in — you'll get an email from
+          Formspree asking you to confirm before it starts forwarding
+          entries. Click that link once and every submission after it
+          delivers straight to your inbox. Free tier caps at 50
+          submissions/month; upgrade on formspree.io if this page starts
+          converting well.
         -->
-        <form onsubmit="event.preventDefault(); alert('Form submitted — wiring to a live endpoint (GHL or Formspree) is still needed before this goes live. For now, call (760) 853-5185.');">
-          <div class="field"><label for="name">Name</label><input id="name" type="text" required></div>
-          <div class="field"><label for="business">Business Name</label><input id="business" type="text" required></div>
-          <div class="field"><label for="email">Email</label><input id="email" type="email" required></div>
-          <div class="field"><label for="phone">Phone</label><input id="phone" type="tel" required></div>
+        <form id="assessment-form" action="https://formspree.io/todd@moreviews.pro" method="POST">
+          <input type="hidden" name="_subject" value="New More Views Pro assessment request">
+          <div class="field"><label for="name">Name</label><input id="name" name="name" type="text" required></div>
+          <div class="field"><label for="business">Business Name</label><input id="business" name="business" type="text" required></div>
+          <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" required></div>
+          <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" required></div>
           <div class="field">
             <label for="need">What do you need?</label>
-            <select id="need" required>
+            <select id="need" name="need" required>
               <option value="">Select one</option>
               <option>Business IT</option>
               <option>Marketing &amp; Advertising</option>
@@ -403,12 +407,40 @@
             </select>
           </div>
           <button class="btn btn-primary btn-block" type="submit">Get My Free Assessment</button>
-          <p class="form-micro">We'll call you back within 1 business day. No pressure, no contract required.</p>
+          <p class="form-micro" id="form-status">We'll call you back within 1 business day. No pressure, no contract required.</p>
         </form>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  (function(){
+    const form = document.getElementById('assessment-form');
+    const status = document.getElementById('form-status');
+    const defaultStatus = status.textContent;
+    form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      status.textContent = 'Sending…';
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          form.reset();
+          Array.from(form.elements).forEach(el => el.disabled = true);
+          status.textContent = "Thanks — we'll call you back within 1 business day.";
+        } else {
+          status.textContent = 'Something went wrong. Call us instead: (760) 422-5475.';
+        }
+      } catch (err) {
+        status.textContent = 'Something went wrong. Call us instead: (760) 422-5475.';
+      }
+    });
+  })();
+</script>
 
 <section id="faq">
   <div class="wrap">
@@ -465,7 +497,7 @@
       <h2 style="margin-top:12px;">Ready to bring it all under one roof?</h2>
       <p>One call gets you a straight answer on your IT, your marketing, or both. No pressure, no obligation.</p>
       <div class="final-ctas">
-        <a class="btn btn-primary" href="tel:+17608535185">Call (760) 853-5185</a>
+        <a class="btn btn-primary" href="tel:+17604225475">Call (760) 422-5475</a>
         <a class="btn btn-ghost" href="#assessment">Get a Free Assessment</a>
       </div>
     </div>
@@ -500,7 +532,7 @@
       <div>
         <h5>Company</h5>
         <ul>
-          <li><a href="tel:+17608535185">(760) 853-5185</a></li>
+          <li><a href="tel:+17604225475">(760) 422-5475</a></li>
           <li><a href="#faq">FAQ</a></li>
           <li><a href="#">Privacy Policy</a></li>
           <li><a href="#">Terms of Service</a></li>
