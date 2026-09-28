@@ -215,8 +215,13 @@
   }
   .picker-tab.active{background:var(--brand);border-color:var(--brand);color:#fff;}
   .picker-status{text-align:center;margin-top:18px;font-size:14px;color:var(--ink-soft);}
+  .picker-side{margin-top:28px;}
+  .picker-side-label{
+    display:block;font-family:'JetBrains Mono';font-size:12px;font-weight:600;
+    letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;
+  }
   .picker-grid{
-    display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:18px;
+    display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;
   }
   @media (max-width:640px){ .picker-grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
   .spot-chip{
@@ -244,7 +249,11 @@
     width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:9px;
     font-family:inherit;font-size:15px;background:var(--paper-tint);
   }
-  .picker-form-shell input:focus{outline:2px solid var(--brand-bright);border-color:transparent;}
+  .picker-form-shell select{
+    width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:9px;
+    font-family:inherit;font-size:15px;background:var(--paper-tint);color:var(--ink);
+  }
+  .picker-form-shell input:focus,.picker-form-shell select:focus{outline:2px solid var(--brand-bright);border-color:transparent;}
   .picker-form-actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;}
   .picker-form-msg{margin-top:12px;font-size:13.5px;color:var(--ink-soft);}
   .picker-form-msg.error{color:#b3261e;}
@@ -513,12 +522,25 @@
       </div>
 
       <div class="picker-status" id="picker-status">Loading spots&hellip;</div>
-      <div class="picker-grid" id="picker-grid"></div>
+
+      <div class="picker-side">
+        <span class="picker-side-label">Front of card</span>
+        <div class="picker-grid" id="picker-grid-front"></div>
+      </div>
+      <div class="picker-side">
+        <span class="picker-side-label">Back of card</span>
+        <div class="picker-grid" id="picker-grid-back"></div>
+      </div>
 
       <div class="picker-form-shell" id="picker-form-shell" hidden>
         <h3 id="picker-form-title">Reserve a spot</h3>
         <p class="picker-form-sub">This holds the spot and lets us know you want it &mdash; we'll email you to arrange payment and lock it in.</p>
         <form id="picker-form">
+          <div class="field"><label for="pf-category">Business category</label>
+            <select id="pf-category" name="category" required>
+              <option value="" disabled selected>Select your category&hellip;</option>
+            </select>
+          </div>
           <div class="field"><label for="pf-name">Your name</label><input id="pf-name" name="name" type="text" required></div>
           <div class="field"><label for="pf-business">Business name</label><input id="pf-business" name="business" type="text" required></div>
           <div class="field"><label for="pf-email">Email</label><input id="pf-email" name="email" type="email" required></div>
@@ -576,15 +598,17 @@
 
   const tabs = document.querySelectorAll(".picker-tab");
   const statusEl = document.getElementById("picker-status");
-  const gridEl = document.getElementById("picker-grid");
+  const gridFrontEl = document.getElementById("picker-grid-front");
+  const gridBackEl = document.getElementById("picker-grid-back");
   const formShell = document.getElementById("picker-form-shell");
   const formTitle = document.getElementById("picker-form-title");
   const form = document.getElementById("picker-form");
+  const categorySelect = document.getElementById("pf-category");
   const formMsg = document.getElementById("picker-form-msg");
   const cancelBtn = document.getElementById("picker-form-cancel");
 
   let currentRoute = "el-paseo";
-  let pendingCategory = null;
+  let pendingPosition = null;
 
   function statusLabel(status) {
     if (status === "open") return "Open";
@@ -595,35 +619,56 @@
   async function loadSpots(route, options = {}) {
     const resetForm = options.resetForm !== false;
     statusEl.textContent = "Loading spots…";
-    gridEl.innerHTML = "";
+    gridFrontEl.innerHTML = "";
+    gridBackEl.innerHTML = "";
     if (resetForm) formShell.hidden = true;
     try {
       const res = await fetch(`${API_BASE}/api/spots?route=${encodeURIComponent(route)}`);
       if (!res.ok) throw new Error("bad response");
       const data = await res.json();
-      renderGrid(route, data.spots);
-      statusEl.textContent = `${ROUTE_LABELS[route]} — tap an open category to hold it.`;
+      renderGrid(route, data.positions);
+      populateCategoryOptions(route, data.categories, data.takenCategories);
+      statusEl.textContent = `${ROUTE_LABELS[route]} — tap an open spot to hold it.`;
     } catch (err) {
       statusEl.textContent = "Couldn't load live spot availability right now. Refresh to try again, or reach out to More Views Pro directly.";
     }
   }
 
-  function renderGrid(route, spots) {
-    gridEl.innerHTML = "";
-    spots.forEach(({ category, status }) => {
+  function renderGrid(route, positions) {
+    gridFrontEl.innerHTML = "";
+    gridBackEl.innerHTML = "";
+    positions.forEach(({ position, status }) => {
       const chip = document.createElement("div");
       chip.className = `spot-chip ${status}`;
-      chip.innerHTML = `${category}<span class="status">${statusLabel(status)}</span>`;
+      chip.innerHTML = `Spot ${position}<span class="status">${statusLabel(status)}</span>`;
       if (status === "open") {
-        chip.addEventListener("click", () => openForm(route, category));
+        chip.addEventListener("click", () => openForm(route, position));
       }
-      gridEl.appendChild(chip);
+      (position <= 8 ? gridFrontEl : gridBackEl).appendChild(chip);
     });
   }
 
-  function openForm(route, category) {
-    pendingCategory = { route, category };
-    formTitle.textContent = `Reserve ${category} — ${ROUTE_LABELS[route]}`;
+  function populateCategoryOptions(route, categories, takenCategories) {
+    const available = categories.filter((c) => !takenCategories.includes(c));
+    categorySelect.innerHTML = '<option value="" disabled selected>Select your category&hellip;</option>';
+    available.forEach((category) => {
+      const opt = document.createElement("option");
+      opt.value = category;
+      opt.textContent = category;
+      categorySelect.appendChild(opt);
+    });
+    if (available.length === 0) {
+      const opt = document.createElement("option");
+      opt.value = "";
+      opt.textContent = "No categories left on this route";
+      opt.disabled = true;
+      categorySelect.appendChild(opt);
+    }
+  }
+
+  function openForm(route, position) {
+    pendingPosition = { route, position };
+    formTitle.textContent = `Reserve Spot ${position} — ${ROUTE_LABELS[route]}`;
     formMsg.textContent = "";
     formMsg.className = "picker-form-msg";
     formShell.hidden = false;
@@ -632,7 +677,7 @@
 
   cancelBtn.addEventListener("click", () => {
     formShell.hidden = true;
-    pendingCategory = null;
+    pendingPosition = null;
   });
 
   tabs.forEach((tab) => {
@@ -646,15 +691,16 @@
 
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
-    if (!pendingCategory) return;
+    if (!pendingPosition) return;
     const submitBtn = form.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
     formMsg.textContent = "Holding your spot…";
     formMsg.className = "picker-form-msg";
 
     const payload = {
-      route: pendingCategory.route,
-      category: pendingCategory.category,
+      route: pendingPosition.route,
+      position: pendingPosition.position,
+      category: form.category.value,
       name: form.name.value,
       business: form.business.value,
       email: form.email.value,
@@ -680,12 +726,13 @@
         method: "POST",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
-          _subject: `Local Spotlight: ${payload.business} wants to hold ${payload.category} on ${ROUTE_LABELS[payload.route]}`,
+          _subject: `Local Spotlight: ${payload.business} wants Spot ${payload.position} (${payload.category}) on ${ROUTE_LABELS[payload.route]}`,
           name: payload.name,
           business: payload.business,
           email: payload.email,
           phone: payload.phone,
           route: ROUTE_LABELS[payload.route],
+          spot: payload.position,
           category: payload.category,
           need: "Local Spotlight spot reservation",
         }),
