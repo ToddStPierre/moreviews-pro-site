@@ -244,6 +244,30 @@
   .spot-chip.reserved{background:var(--paper-tint);cursor:not-allowed;opacity:.6;}
   .spot-chip.reserved .status{color:var(--ink-soft);}
 
+  /* image-based card picker (routes with a real front/back card mockup) */
+  .picker-card{position:relative;border-radius:14px;overflow:hidden;line-height:0;box-shadow:0 1px 0 var(--line);}
+  .picker-card img{display:block;width:100%;height:auto;}
+  .card-spot{
+    position:absolute;border:none;padding:0;cursor:pointer;border-radius:7px;
+    background:rgba(10,92,70,.16);transition:background .12s ease;
+  }
+  .card-spot:hover{background:rgba(10,92,70,.3);}
+  .card-spot .card-spot-label{
+    position:absolute;left:6%;right:6%;bottom:6%;font-family:'JetBrains Mono';font-size:11px;
+    font-weight:700;letter-spacing:.03em;text-align:center;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.55);
+    pointer-events:none;
+  }
+  .card-spot.pending{background:rgba(232,98,44,.26);cursor:not-allowed;}
+  .card-spot.pending:hover{background:rgba(232,98,44,.26);}
+  .card-spot.reserved{background:rgba(16,20,24,.32);cursor:not-allowed;}
+  .card-spot.reserved:hover{background:rgba(16,20,24,.32);}
+  .picker-card-legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:12px;font-size:12.5px;color:var(--ink-soft);}
+  .picker-card-legend span{display:inline-flex;align-items:center;gap:6px;}
+  .picker-card-legend i{width:12px;height:12px;border-radius:3px;display:inline-block;}
+  .picker-card-legend .lg-open i{background:rgba(10,92,70,.5);}
+  .picker-card-legend .lg-pending i{background:rgba(232,98,44,.5);}
+  .picker-card-legend .lg-reserved i{background:rgba(16,20,24,.5);}
+
   .picker-form-shell{
     margin-top:26px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;
   }
@@ -259,7 +283,11 @@
     width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:9px;
     font-family:inherit;font-size:15px;background:var(--paper-tint);color:var(--ink);
   }
-  .picker-form-shell input:focus,.picker-form-shell select:focus{outline:2px solid var(--brand-bright);border-color:transparent;}
+  .picker-form-shell textarea{
+    width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:9px;
+    font-family:inherit;font-size:15px;background:var(--paper-tint);color:var(--ink);resize:vertical;
+  }
+  .picker-form-shell input:focus,.picker-form-shell select:focus,.picker-form-shell textarea:focus{outline:2px solid var(--brand-bright);border-color:transparent;}
   .picker-form-actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;}
   .picker-form-msg{margin-top:12px;font-size:13.5px;color:var(--ink-soft);}
   .picker-form-msg.error{color:#b3261e;}
@@ -575,6 +603,7 @@
           <div class="field"><label for="pf-business">Business name</label><input id="pf-business" name="business" type="text" required></div>
           <div class="field"><label for="pf-email">Email</label><input id="pf-email" name="email" type="email" required></div>
           <div class="field"><label for="pf-phone">Phone (optional)</label><input id="pf-phone" name="phone" type="tel"></div>
+          <div class="field"><label for="pf-notes">Notes / special requests (optional)</label><textarea id="pf-notes" name="notes" rows="3"></textarea></div>
           <div class="picker-form-actions">
             <button class="btn btn-primary" type="submit">Hold this spot</button>
             <button class="btn btn-ghost" type="button" id="picker-form-cancel">Cancel</button>
@@ -650,6 +679,34 @@
   const API_BASE = "https://local-spotlight-reservations.toddstpierre.workers.dev";
   const NOTIFY_ENDPOINT = "https://formspree.io/f/myezyype";
   const ROUTE_LABELS = { "el-paseo": "El Paseo", "sun-city-palm-desert": "Sun City Palm Desert" };
+  // Routes with a real front/back card mockup get the image-based picker instead of the plain grid.
+  // Box coordinates measured directly off the print files (2000x1091px), as % of the image so they
+  // scale with any rendered width. Same 4-per-row layout on both the front and back of the card.
+  // Both routes' print files share the exact same 4-per-row box grid (measured off both
+  // pairs of images independently, coordinates match to within a pixel), so the same
+  // `boxes` array applies to each — only the image paths differ per route.
+  const CARD_BOXES = [
+    { left: 0.65, top: 2.02, width: 23.95, height: 41.16 },
+    { left: 25.5, top: 2.02, width: 24.0, height: 41.16 },
+    { left: 50.4, top: 2.02, width: 24.0, height: 41.16 },
+    { left: 75.3, top: 2.02, width: 23.95, height: 41.16 },
+    { left: 0.65, top: 57.29, width: 23.95, height: 41.16 },
+    { left: 25.5, top: 57.29, width: 24.0, height: 41.16 },
+    { left: 50.4, top: 57.29, width: 24.0, height: 41.16 },
+    { left: 75.3, top: 57.29, width: 23.95, height: 41.16 },
+  ];
+  const CARD_LAYOUTS = {
+    "el-paseo": {
+      front: "images/el-paseo-card-front.png",
+      back: "images/el-paseo-card-back.png",
+      boxes: CARD_BOXES,
+    },
+    "sun-city-palm-desert": {
+      front: "images/sun-city-card-front.png",
+      back: "images/sun-city-card-back.png",
+      boxes: CARD_BOXES,
+    },
+  };
 
   const tabs = document.querySelectorAll(".picker-tab");
   const statusEl = document.getElementById("picker-status");
@@ -692,6 +749,19 @@
   function renderGrid(route, positions) {
     gridFrontEl.innerHTML = "";
     gridBackEl.innerHTML = "";
+    const layout = CARD_LAYOUTS[route];
+    if (layout) {
+      renderCardGrid(route, positions, layout);
+    } else {
+      renderChipGrid(route, positions);
+    }
+  }
+
+  function renderChipGrid(route, positions) {
+    gridFrontEl.className = "picker-grid";
+    gridBackEl.className = "picker-grid";
+    const legend = document.getElementById("picker-card-legend");
+    if (legend) legend.remove();
     positions.forEach(({ position, status }) => {
       const chip = document.createElement("div");
       chip.className = `spot-chip ${status}`;
@@ -701,6 +771,52 @@
       }
       (position <= 8 ? gridFrontEl : gridBackEl).appendChild(chip);
     });
+  }
+
+  function renderCardGrid(route, positions, layout) {
+    gridFrontEl.className = "picker-card";
+    gridBackEl.className = "picker-card";
+
+    const frontImg = document.createElement("img");
+    frontImg.src = layout.front;
+    frontImg.alt = `Front of the ${ROUTE_LABELS[route]} Spotlight postcard, showing the 8 ad spots on this side`;
+    gridFrontEl.appendChild(frontImg);
+
+    const backImg = document.createElement("img");
+    backImg.src = layout.back;
+    backImg.alt = `Back of the ${ROUTE_LABELS[route]} Spotlight postcard, showing the 8 ad spots on this side`;
+    gridBackEl.appendChild(backImg);
+
+    positions.forEach(({ position, status }) => {
+      const isFront = position <= 8;
+      const box = layout.boxes[(position - 1) % 8];
+      const spot = document.createElement(status === "open" ? "button" : "div");
+      spot.className = `card-spot ${status}`;
+      spot.style.left = `${box.left}%`;
+      spot.style.top = `${box.top}%`;
+      spot.style.width = `${box.width}%`;
+      spot.style.height = `${box.height}%`;
+      spot.setAttribute("aria-label", `Spot ${position} — ${statusLabel(status)}`);
+      spot.title = `Spot ${position} — ${statusLabel(status)}`;
+      spot.innerHTML = `<span class="card-spot-label">Spot ${position} — ${statusLabel(status)}</span>`;
+      if (status === "open") {
+        spot.type = "button";
+        spot.addEventListener("click", () => openForm(route, position));
+      }
+      (isFront ? gridFrontEl : gridBackEl).appendChild(spot);
+    });
+
+    if (!document.getElementById("picker-card-legend")) {
+      const legend = document.createElement("div");
+      legend.id = "picker-card-legend";
+      legend.className = "picker-card-legend";
+      legend.innerHTML = `
+        <span class="lg-open"><i></i>Open — tap to hold it</span>
+        <span class="lg-pending"><i></i>Pending</span>
+        <span class="lg-reserved"><i></i>Reserved</span>
+      `;
+      gridBackEl.insertAdjacentElement("afterend", legend);
+    }
   }
 
   function populateCategoryOptions(route, categories, takenCategories) {
@@ -760,6 +876,7 @@
       business: form.business.value,
       email: form.email.value,
       phone: form.phone.value,
+      notes: form.notes.value,
     };
 
     try {
@@ -786,6 +903,7 @@
           business: payload.business,
           email: payload.email,
           phone: payload.phone,
+          notes: payload.notes,
           route: ROUTE_LABELS[payload.route],
           spot: payload.position,
           category: payload.category,
