@@ -206,6 +206,50 @@
   .final-cta .btn-ghost:hover{border-color:#fff;}
   .final-cta .click-trigger{display:block;margin-top:16px;font-size:13px;color:#8b939b;}
 
+  /* spot picker */
+  .picker{max-width:820px;margin:36px auto 0;}
+  .picker-tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+  .picker-tab{
+    padding:10px 18px;border-radius:999px;border:1.5px solid var(--line);background:#fff;
+    font-weight:600;font-size:14px;cursor:pointer;color:var(--ink-soft);
+  }
+  .picker-tab.active{background:var(--brand);border-color:var(--brand);color:#fff;}
+  .picker-status{text-align:center;margin-top:18px;font-size:14px;color:var(--ink-soft);}
+  .picker-grid{
+    display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:18px;
+  }
+  @media (max-width:640px){ .picker-grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
+  .spot-chip{
+    border-radius:11px;border:1.5px solid var(--line);background:#fff;padding:14px 10px;
+    text-align:center;font-size:13.5px;font-weight:600;cursor:pointer;
+    transition:transform .1s ease, box-shadow .1s ease;
+  }
+  .spot-chip:hover{transform:translateY(-1px);box-shadow:0 8px 18px -10px rgba(16,20,24,.3);}
+  .spot-chip .status{display:block;margin-top:5px;font-family:'JetBrains Mono';font-size:10.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+  .spot-chip.open{border-color:var(--brand-bright);}
+  .spot-chip.open .status{color:var(--brand);}
+  .spot-chip.pending{background:var(--paper-tint);cursor:not-allowed;opacity:.75;}
+  .spot-chip.pending .status{color:var(--accent);}
+  .spot-chip.reserved{background:var(--paper-tint);cursor:not-allowed;opacity:.6;}
+  .spot-chip.reserved .status{color:var(--ink-soft);}
+
+  .picker-form-shell{
+    margin-top:26px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;
+  }
+  .picker-form-shell h3{font-size:19px;}
+  .picker-form-sub{margin-top:6px;color:var(--ink-soft);font-size:14.5px;}
+  .picker-form-shell .field{margin-top:14px;margin-bottom:0;}
+  .picker-form-shell label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .picker-form-shell input{
+    width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:9px;
+    font-family:inherit;font-size:15px;background:var(--paper-tint);
+  }
+  .picker-form-shell input:focus{outline:2px solid var(--brand-bright);border-color:transparent;}
+  .picker-form-actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;}
+  .picker-form-msg{margin-top:12px;font-size:13.5px;color:var(--ink-soft);}
+  .picker-form-msg.error{color:#b3261e;}
+  .picker-form-msg.success{color:var(--brand);}
+
   /* footer */
   footer{background:var(--paper-tint);border-top:1px solid var(--line);padding:56px 0 28px;}
   .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;}
@@ -236,7 +280,7 @@
       <a href="#routes">Routes</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <a href="#reserve" class="btn btn-primary btn-sm" aria-disabled="true">Reserve my spot</a>
+    <a href="#reserve" class="btn btn-primary btn-sm">Reserve my spot</a>
   </div>
 </header>
 
@@ -247,7 +291,7 @@
       <h1>Reach Local homes <span class="grad">without paying for the whole mailer.</span></h1>
       <p class="sub">Local Spotlight splits one oversized postcard between up to 16 local businesses that don't compete with each other. Everyone splits the cost of printing and mailing. Everyone gets the reach.</p>
       <div class="cta-row">
-        <a href="#reserve" class="btn btn-primary" aria-disabled="true">Reserve my spot</a>
+        <a href="#reserve" class="btn btn-primary">Reserve my spot</a>
         <a href="#how" class="btn btn-ghost">See how it works</a>
       </div>
       <p class="risk-line"><b>$300</b> for a 2.7&Prime; x 2.5&Prime; spot. One business per category, per card.</p>
@@ -448,7 +492,7 @@
       </details>
       <details>
         <summary>How do I reserve a spot? <span class="plus">+</span></summary>
-        <p>This page's reservation button isn't wired up to a form yet. Reach out to More Views Pro directly in the meantime.</p>
+        <p>Scroll down and tap an open category on your route. That holds the spot and sends us your info &mdash; we'll follow up by email to arrange payment and lock it in.</p>
       </details>
     </div>
   </div>
@@ -459,11 +503,33 @@
     <div class="final-cta">
       <span class="eyebrow" style="color:#9fb0bf;">READY?</span>
       <h2 style="margin-top:12px;">Be the only business in your line of work on the next card.</h2>
-      <p>$300 locks your category on a route mailing to about 5,000 homes.</p>
-      <div class="final-ctas">
-        <a href="#reserve" class="btn btn-primary" aria-disabled="true">Reserve my spot</a>
+      <p>$300 locks your category on a route mailing to about 5,000 homes. Pick an open spot below to hold it &mdash; we'll follow up with the invoice.</p>
+    </div>
+
+    <div class="picker">
+      <div class="picker-tabs" role="tablist">
+        <button class="picker-tab active" data-route="el-paseo" type="button">El Paseo</button>
+        <button class="picker-tab" data-route="sun-city-palm-desert" type="button">Sun City Palm Desert</button>
       </div>
-      <span class="click-trigger">Reservation link coming soon &mdash; this button isn't live yet.</span>
+
+      <div class="picker-status" id="picker-status">Loading spots&hellip;</div>
+      <div class="picker-grid" id="picker-grid"></div>
+
+      <div class="picker-form-shell" id="picker-form-shell" hidden>
+        <h3 id="picker-form-title">Reserve a spot</h3>
+        <p class="picker-form-sub">This holds the spot and lets us know you want it &mdash; we'll email you to arrange payment and lock it in.</p>
+        <form id="picker-form">
+          <div class="field"><label for="pf-name">Your name</label><input id="pf-name" name="name" type="text" required></div>
+          <div class="field"><label for="pf-business">Business name</label><input id="pf-business" name="business" type="text" required></div>
+          <div class="field"><label for="pf-email">Email</label><input id="pf-email" name="email" type="email" required></div>
+          <div class="field"><label for="pf-phone">Phone (optional)</label><input id="pf-phone" name="phone" type="tel"></div>
+          <div class="picker-form-actions">
+            <button class="btn btn-primary" type="submit">Hold this spot</button>
+            <button class="btn btn-ghost" type="button" id="picker-form-cancel">Cancel</button>
+          </div>
+          <p class="picker-form-msg" id="picker-form-msg"></p>
+        </form>
+      </div>
     </div>
   </div>
 </section>
@@ -501,6 +567,146 @@
     </div>
   </div>
 </footer>
+
+<script>
+(function () {
+  const API_BASE = "https://local-spotlight-reservations.toddstpierre.workers.dev";
+  const NOTIFY_ENDPOINT = "https://formspree.io/f/myezyype";
+  const ROUTE_LABELS = { "el-paseo": "El Paseo", "sun-city-palm-desert": "Sun City Palm Desert" };
+
+  const tabs = document.querySelectorAll(".picker-tab");
+  const statusEl = document.getElementById("picker-status");
+  const gridEl = document.getElementById("picker-grid");
+  const formShell = document.getElementById("picker-form-shell");
+  const formTitle = document.getElementById("picker-form-title");
+  const form = document.getElementById("picker-form");
+  const formMsg = document.getElementById("picker-form-msg");
+  const cancelBtn = document.getElementById("picker-form-cancel");
+
+  let currentRoute = "el-paseo";
+  let pendingCategory = null;
+
+  function statusLabel(status) {
+    if (status === "open") return "Open";
+    if (status === "pending") return "Pending";
+    return "Reserved";
+  }
+
+  async function loadSpots(route, options = {}) {
+    const resetForm = options.resetForm !== false;
+    statusEl.textContent = "Loading spots…";
+    gridEl.innerHTML = "";
+    if (resetForm) formShell.hidden = true;
+    try {
+      const res = await fetch(`${API_BASE}/api/spots?route=${encodeURIComponent(route)}`);
+      if (!res.ok) throw new Error("bad response");
+      const data = await res.json();
+      renderGrid(route, data.spots);
+      statusEl.textContent = `${ROUTE_LABELS[route]} — tap an open category to hold it.`;
+    } catch (err) {
+      statusEl.textContent = "Couldn't load live spot availability right now. Refresh to try again, or reach out to More Views Pro directly.";
+    }
+  }
+
+  function renderGrid(route, spots) {
+    gridEl.innerHTML = "";
+    spots.forEach(({ category, status }) => {
+      const chip = document.createElement("div");
+      chip.className = `spot-chip ${status}`;
+      chip.innerHTML = `${category}<span class="status">${statusLabel(status)}</span>`;
+      if (status === "open") {
+        chip.addEventListener("click", () => openForm(route, category));
+      }
+      gridEl.appendChild(chip);
+    });
+  }
+
+  function openForm(route, category) {
+    pendingCategory = { route, category };
+    formTitle.textContent = `Reserve ${category} — ${ROUTE_LABELS[route]}`;
+    formMsg.textContent = "";
+    formMsg.className = "picker-form-msg";
+    formShell.hidden = false;
+    formShell.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  cancelBtn.addEventListener("click", () => {
+    formShell.hidden = true;
+    pendingCategory = null;
+  });
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      tabs.forEach((t) => t.classList.remove("active"));
+      tab.classList.add("active");
+      currentRoute = tab.dataset.route;
+      loadSpots(currentRoute);
+    });
+  });
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    if (!pendingCategory) return;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    formMsg.textContent = "Holding your spot…";
+    formMsg.className = "picker-form-msg";
+
+    const payload = {
+      route: pendingCategory.route,
+      category: pendingCategory.category,
+      name: form.name.value,
+      business: form.business.value,
+      email: form.email.value,
+      phone: form.phone.value,
+    };
+
+    try {
+      const res = await fetch(`${API_BASE}/api/reserve`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        formMsg.textContent = data.error || "That spot just got taken. Pick another one.";
+        formMsg.className = "picker-form-msg error";
+        submitBtn.disabled = false;
+        loadSpots(currentRoute, { resetForm: false });
+        return;
+      }
+
+      fetch(NOTIFY_ENDPOINT, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+          _subject: `Local Spotlight: ${payload.business} wants to hold ${payload.category} on ${ROUTE_LABELS[payload.route]}`,
+          name: payload.name,
+          business: payload.business,
+          email: payload.email,
+          phone: payload.phone,
+          route: ROUTE_LABELS[payload.route],
+          category: payload.category,
+          need: "Local Spotlight spot reservation",
+        }),
+      }).catch(() => {});
+
+      formMsg.textContent = "Spot held! We'll email you shortly to confirm payment and lock it in.";
+      formMsg.className = "picker-form-msg success";
+      submitBtn.disabled = false;
+      form.reset();
+      setTimeout(() => { formShell.hidden = true; }, 2500);
+      loadSpots(currentRoute, { resetForm: false });
+    } catch (err) {
+      formMsg.textContent = "Something went wrong. Please try again in a moment.";
+      formMsg.className = "picker-form-msg error";
+      submitBtn.disabled = false;
+    }
+  });
+
+  loadSpots(currentRoute);
+})();
+</script>
 
 </body>
 </html>
