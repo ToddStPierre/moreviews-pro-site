@@ -266,6 +266,27 @@
   .picker-form-msg.error{color:#b3261e;}
   .picker-form-msg.success{color:var(--brand);}
 
+  /* contact */
+  .contact-shell{
+    max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;
+  }
+  @media (max-width:760px){ .contact-shell{grid-template-columns:1fr;} }
+  #contact h2{font-size:clamp(24px,3vw,32px);margin-top:12px;letter-spacing:-.01em;}
+  .contact-sub{margin-top:14px;color:var(--ink-soft);font-size:16px;}
+  .contact-direct{margin-top:20px;display:flex;flex-direction:column;gap:8px;}
+  .contact-direct a{font-weight:700;color:var(--brand);text-decoration:underline;font-size:16px;}
+  .contact-direct a:hover{color:var(--brand-bright);}
+  #contact-form{background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;}
+  #contact-form .field{margin-top:14px;}
+  #contact-form .field:first-child{margin-top:0;}
+  #contact-form label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  #contact-form input,#contact-form textarea{
+    width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:9px;
+    font-family:inherit;font-size:15px;background:var(--paper-tint);resize:vertical;
+  }
+  #contact-form input:focus,#contact-form textarea:focus{outline:2px solid var(--brand-bright);border-color:transparent;}
+  #contact-form button{margin-top:20px;}
+
   /* footer */
   footer{background:var(--paper-tint);border-top:1px solid var(--line);padding:56px 0 28px;}
   .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px;}
@@ -295,6 +316,7 @@
       <a href="#how">How it works</a>
       <a href="#routes">Routes</a>
       <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
     </nav>
     <a href="#reserve" class="btn btn-primary btn-sm">Reserve my spot</a>
   </div>
@@ -565,6 +587,30 @@
   </div>
 </section>
 
+<section class="alt" id="contact">
+  <div class="wrap">
+    <div class="contact-shell">
+      <div>
+        <span class="eyebrow">QUESTIONS?</span>
+        <h2>Not ready to reserve? Ask us anything.</h2>
+        <p class="contact-sub">Send a message and a real person &mdash; not a call center &mdash; will get back to you. Or skip the form and reach out directly:</p>
+        <div class="contact-direct">
+          <a href="tel:+17604225475">(760) 422-5475</a>
+          <a href="mailto:todd@moreviews.pro">todd@moreviews.pro</a>
+        </div>
+      </div>
+      <form id="contact-form">
+        <input type="hidden" name="_subject" value="Local Spotlight contact question">
+        <div class="field"><label for="cf-name">Name</label><input id="cf-name" name="name" type="text" required></div>
+        <div class="field"><label for="cf-email">Email</label><input id="cf-email" name="email" type="email" required></div>
+        <div class="field"><label for="cf-message">Message</label><textarea id="cf-message" name="message" rows="4" required></textarea></div>
+        <button class="btn btn-primary" type="submit" style="width:100%;">Send Message</button>
+        <p class="picker-form-msg" id="contact-form-msg"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
     <div class="foot-grid">
@@ -579,6 +625,7 @@
           <li><a href="#how">How it works</a></li>
           <li><a href="#routes">Routes</a></li>
           <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Contact</a></li>
         </ul>
       </div>
       <div>
@@ -761,6 +808,40 @@
   });
 
   loadSpots(currentRoute);
+
+  const contactForm = document.getElementById("contact-form");
+  const contactMsg = document.getElementById("contact-form-msg");
+  contactForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    contactMsg.textContent = "Sending…";
+    contactMsg.className = "picker-form-msg";
+    try {
+      const res = await fetch(NOTIFY_ENDPOINT, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+          _subject: "Local Spotlight contact question",
+          name: contactForm.name.value,
+          email: contactForm.email.value,
+          message: contactForm.message.value,
+        }),
+      });
+      if (res.ok) {
+        contactMsg.textContent = "Thanks — we'll get back to you soon.";
+        contactMsg.className = "picker-form-msg success";
+        contactForm.reset();
+      } else {
+        contactMsg.textContent = "Something went wrong. Call us instead: (760) 422-5475.";
+        contactMsg.className = "picker-form-msg error";
+      }
+    } catch (err) {
+      contactMsg.textContent = "Something went wrong. Call us instead: (760) 422-5475.";
+      contactMsg.className = "picker-form-msg error";
+    }
+    submitBtn.disabled = false;
+  });
 })();
 </script>
 
