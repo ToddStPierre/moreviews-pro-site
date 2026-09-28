@@ -161,6 +161,27 @@
   .route-card .route-name{font-family:'Sora';font-weight:700;font-size:22px;}
   .route-card .route-stat{font-family:'JetBrains Mono';color:#bfe9d8;font-size:14px;margin-top:4px;}
   .route-card p{color:#d6ece3;font-size:14.5px;margin-top:12px;}
+  .route-report-link{
+    display:inline-flex;align-items:center;gap:6px;margin-top:16px;
+    background:none;border:none;padding:0;cursor:pointer;
+    font-family:'Inter';font-weight:700;font-size:14px;color:#bfe9d8;text-decoration:underline;
+  }
+  .route-report-link:hover{color:#fff;}
+
+  /* report image modal */
+  .report-modal{
+    position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;
+    background:rgba(16,20,24,.72);padding:32px;
+  }
+  .report-modal.open{display:flex;}
+  .report-modal-inner{position:relative;max-width:680px;max-height:90vh;width:100%;}
+  .report-modal-inner img{width:100%;max-height:90vh;object-fit:contain;border-radius:14px;box-shadow:0 40px 80px -20px rgba(0,0,0,.5);display:block;}
+  .report-modal-close{
+    position:absolute;top:-18px;right:-18px;width:40px;height:40px;border-radius:50%;
+    background:#fff;border:none;cursor:pointer;font-size:20px;font-weight:700;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px -6px rgba(0,0,0,.4);
+  }
+  @media (max-width:600px){ .report-modal-close{top:-46px;right:0;} }
 
   /* how it works */
   .steps{display:grid;gap:28px;}
@@ -396,6 +417,7 @@
         <div class="route-name">El Paseo</div>
         <div class="route-stat mono">4,972 homes</div>
         <p>Palm Desert's shopping and dining corridor. Restaurants, salons, boutiques and home services in the surrounding neighborhoods.</p>
+        <button type="button" class="route-report-link" data-report-image="images/el-paseo-mailing-area-report.jpg" data-report-alt="El Paseo mailing area report: 4,972 homes reached across 8 USPS carrier routes in Palm Desert, ZIP code 92260">Who this mailing reaches &rarr;</button>
       </div>
       <div class="route-card">
         <div class="route-name">Sun City Palm Desert</div>
@@ -555,6 +577,13 @@
     </div>
   </div>
 </section>
+
+<div class="report-modal" id="report-modal">
+  <div class="report-modal-inner">
+    <button type="button" class="report-modal-close" id="report-modal-close" aria-label="Close">&times;</button>
+    <img id="report-modal-img" src="" alt="">
+  </div>
+</div>
 
 <footer>
   <div class="wrap">
@@ -752,6 +781,31 @@
   });
 
   loadSpots(currentRoute);
+
+  const reportModal = document.getElementById("report-modal");
+  const reportModalImg = document.getElementById("report-modal-img");
+  const reportModalClose = document.getElementById("report-modal-close");
+
+  document.querySelectorAll(".route-report-link").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      reportModalImg.src = btn.dataset.reportImage;
+      reportModalImg.alt = btn.dataset.reportAlt || "";
+      reportModal.classList.add("open");
+    });
+  });
+
+  function closeReportModal() {
+    reportModal.classList.remove("open");
+    reportModalImg.src = "";
+  }
+
+  reportModalClose.addEventListener("click", closeReportModal);
+  reportModal.addEventListener("click", (e) => {
+    if (e.target === reportModal) closeReportModal();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeReportModal();
+  });
 })();
 </script>
 
