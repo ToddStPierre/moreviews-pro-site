@@ -268,7 +268,8 @@
   .card-spot.pending:hover{background:rgba(232,98,44,.26);}
   .card-spot.reserved{background:rgba(16,20,24,.32);cursor:not-allowed;}
   .card-spot.reserved:hover{background:rgba(16,20,24,.32);}
-  .picker-card-legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:12px;font-size:12.5px;color:var(--ink-soft);}
+  .picker-card-legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:16px;font-size:12.5px;color:var(--ink-soft);}
+  .picker-dims{text-align:center;margin-top:10px;font-size:13px;color:var(--ink-soft);}
   .picker-card-legend span{display:inline-flex;align-items:center;gap:6px;}
   .picker-card-legend i{width:12px;height:12px;border-radius:3px;display:inline-block;}
   .picker-card-legend .lg-open i{background:rgba(10,92,70,.5);}
@@ -579,6 +580,12 @@
       </div>
 
       <div class="picker-status" id="picker-status">Loading spots&hellip;</div>
+      <div class="picker-card-legend" id="picker-card-legend">
+        <span class="lg-open"><i></i>Open — tap to hold it</span>
+        <span class="lg-pending"><i></i>Pending</span>
+        <span class="lg-reserved"><i></i>Sold</span>
+      </div>
+      <p class="picker-dims">2.7&Prime; x 2.5&Prime; ad spot</p>
 
       <div class="picker-side">
         <span class="picker-side-label">Front of card</span>
@@ -769,8 +776,6 @@
   function renderChipGrid(route, positions) {
     gridFrontEl.className = "picker-grid";
     gridBackEl.className = "picker-grid";
-    const legend = document.getElementById("picker-card-legend");
-    if (legend) legend.remove();
     positions.forEach(({ position, status, category }) => {
       const chip = document.createElement("div");
       chip.className = `spot-chip ${status}`;
@@ -817,18 +822,6 @@
       }
       (isFront ? gridFrontEl : gridBackEl).appendChild(spot);
     });
-
-    if (!document.getElementById("picker-card-legend")) {
-      const legend = document.createElement("div");
-      legend.id = "picker-card-legend";
-      legend.className = "picker-card-legend";
-      legend.innerHTML = `
-        <span class="lg-open"><i></i>Open — tap to hold it</span>
-        <span class="lg-pending"><i></i>Pending</span>
-        <span class="lg-reserved"><i></i>Sold</span>
-      `;
-      gridBackEl.insertAdjacentElement("afterend", legend);
-    }
   }
 
   function populateCategoryOptions(route, categories, takenCategories) {
