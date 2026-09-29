@@ -123,9 +123,7 @@
   .postcard-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
   .postcard-title{font-family:'Sora';font-weight:700;font-size:16px;}
   .postcard-tag{font-family:'JetBrains Mono';font-size:12px;color:var(--ink-soft);border:1px solid var(--line);padding:3px 9px;border-radius:6px;}
-  .postcard-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;}
-  .spot{aspect-ratio:1;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono';font-size:11px;font-weight:600;color:#fff;text-align:center;padding:4px;}
-  .spot.open{background:repeating-linear-gradient(45deg,var(--line),var(--line) 6px,transparent 6px,transparent 12px);color:var(--ink-soft);border:1.5px dashed #c7cdd3;}
+  .postcard-photo{width:100%;display:block;border-radius:10px;}
   .postcard-foot{margin-top:14px;font-size:12.5px;color:var(--ink-soft);text-align:center;}
 
   /* ---------- section shell ---------- */
@@ -358,8 +356,8 @@
   <div class="wrap hero-inner">
     <div>
       <span class="eyebrow">ONE SPOT PER INDUSTRY, PER CARD</span>
-      <h1>Reach Local Customers <span class="grad">without paying for the whole mailer.</span></h1>
-      <p class="sub">Local Spotlight splits one oversized postcard between up to 16 local businesses that don't compete with each other. Everyone splits the cost of printing and mailing. Everyone gets the reach.</p>
+      <h1>Be the Only Landscaper on This Card. <span class="grad">Once It's Gone, It's Gone.</span></h1>
+      <p class="sub">One spot per industry per postcard. $300 locks your category, permanently, on a route mailing to approx 5,000 homes.</p>
       <div class="cta-row">
         <a href="#reserve" class="btn btn-primary">Reserve my spot</a>
         <a href="#how" class="btn btn-ghost">See how it works</a>
@@ -376,16 +374,7 @@
         <span class="postcard-title">Local Spotlight</span>
         <span class="postcard-tag mono">6x11&Prime;</span>
       </div>
-      <div class="postcard-grid">
-        <div class="spot" style="background:#0a5c46">Landscaping</div>
-        <div class="spot" style="background:#e8622c">Pool Care</div>
-        <div class="spot" style="background:#101418">Med Spa</div>
-        <div class="spot" style="background:#12a37e">Dental</div>
-        <div class="spot open">Open&nbsp;spot</div>
-        <div class="spot" style="background:#0a5c46">HVAC</div>
-        <div class="spot" style="background:#101418">Chiropractic</div>
-        <div class="spot open">Open&nbsp;spot</div>
-      </div>
+      <img class="postcard-photo" src="images/sun-city-spotlight-example.jpg" alt="A real Sun City Spotlight postcard mailer, showing 8 local businesses each with their own spot on the card.">
       <p class="postcard-foot mono">16 spots, 1 industry each &middot; mailed to Approx. 5,000 homes</p>
     </div>
   </div>
@@ -402,17 +391,17 @@
       <div class="pain-card">
         <span class="num">01</span>
         <h3>Ad costs only go up</h3>
-        <p>Boosted posts and search ads get more expensive every quarter, and the algorithm decides who actually sees them, not you.</p>
+        <p><strong>Boosted posts and search ads get more expensive every quarter, and the algorithm decides who actually sees them, not you.</strong></p>
       </div>
       <div class="pain-card">
         <span class="num">02</span>
         <h3>Mailing alone is a big spend</h3>
-        <p>A print run and postage for 5,000 homes is a real number for one small business to carry by itself.</p>
+        <p><strong>A print run and postage for 5,000 homes is a real number for one small business to carry by itself.</strong></p>
       </div>
       <div class="pain-card">
         <span class="num">03</span>
         <h3>Most mail gets ignored</h3>
-        <p>A full mailbox of flyers from one sender is easy to skip past. A card people actually keep needs to earn a look.</p>
+        <p>A full mailbox of flyers from one sender is easy to skip past. <strong>A card people actually keep needs to earn a look.</strong></p>
       </div>
     </div>
   </div>
@@ -429,17 +418,17 @@
       <div class="method-card">
         <div class="method-num">01</div>
         <h3>One card, up to 16 businesses</h3>
-        <p>Print and postage get split between every business on the card, so no one pays for a full mailing alone.</p>
+        <p><strong>Print and postage get split between every business on the card, so no one pays for a full mailing alone.</strong></p>
       </div>
       <div class="method-card">
         <div class="method-num">02</div>
         <h3>One spot per industry</h3>
-        <p>Once a category is taken on a card, it's closed. No other business in your line of work shares that mailer with you.</p>
+        <p><strong>Once a category is taken on a card, it's closed.</strong> No other business in your line of work shares that mailer with you.</p>
       </div>
       <div class="method-card">
         <div class="method-num">03</div>
         <h3>An oversized format</h3>
-        <p>A 6x11&Prime; postcard doesn't fit through a mail slot unnoticed. It gets looked at before it gets set down.</p>
+        <p>A 6x11&Prime; postcard doesn't fit through a mail slot unnoticed. <strong>It gets looked at before it gets set down.</strong></p>
       </div>
     </div>
   </div>
@@ -482,10 +471,6 @@
         <div>
           <h3>We print and mail it</h3>
           <p>The finished card goes to every home on the route by USPS. You don't handle printing, postage, or a mailing list.</p>
-          <figure class="step-example">
-            <img src="images/sun-city-spotlight-example.jpg" alt="A real Sun City Spotlight postcard mailer, showing 8 local businesses each with their own spot on the card.">
-            <figcaption>A real Sun City Spotlight mailer</figcaption>
-          </figure>
         </div>
       </div>
     </div>
@@ -529,12 +514,56 @@
   </div>
 </section>
 
+<section class="alt" id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">FAQ</span>
+      <h2>Straight answers before you reserve.</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>How do I know a competitor won't be on my card? <span class="plus">+</span></summary>
+        <p>Once a business reserves a spot in an industry category, that category is closed for that card. No other business in the same line of work is added to it.</p>
+      </details>
+      <details>
+        <summary>What locks in my spot? <span class="plus">+</span></summary>
+        <p>A paid invoice. Once that's in, your category on that card is yours.</p>
+      </details>
+      <details>
+        <summary>What if I want to be on both routes? <span class="plus">+</span></summary>
+        <p>You can reserve a spot on El Paseo, Sun City Palm Desert, or both. Each route is its own card and its own reservation.</p>
+      </details>
+      <details>
+        <summary>Do I need to design anything myself? <span class="plus">+</span></summary>
+        <p>No. We build your spot on the card and send it to you to approve before it goes to print.</p>
+      </details>
+      <details>
+        <summary>How many homes actually get the mailer? <span class="plus">+</span></summary>
+        <p>Around 5,000 homes per route, mailed by USPS &mdash; see the full mailing area report for <a href="images/el-paseo-mailing-area-report.pdf" target="_blank" rel="noopener">El Paseo</a> or <a href="images/sun-city-mailing-area-report.pdf" target="_blank" rel="noopener">Sun City Palm Desert</a>.</p>
+      </details>
+      <details>
+        <summary>Is this a franchise or a national directory? <span class="plus">+</span></summary>
+        <p>No. Local Spotlight is run by More Views Pro, a local marketing company. It's two real routes in the Coachella Valley right now, not a nationwide network.</p>
+      </details>
+      <details>
+        <summary>Do you guarantee results? <span class="plus">+</span></summary>
+        <p>No. We can tell you exactly how many homes get the card and when it mails. We don't promise a specific number of calls or customers from it.</p>
+      </details>
+      <details>
+        <summary>How do I reserve a spot? <span class="plus">+</span></summary>
+        <p>Scroll down and tap an open category on your route. That holds the spot and sends us your info &mdash; we'll follow up by email to arrange payment and lock it in.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
 <section id="reserve">
   <div class="wrap">
     <div class="final-cta">
       <span class="eyebrow" style="color:#9fb0bf;">READY?</span>
       <h2 style="margin-top:12px;">Be the only business in your line of work on the next card.</h2>
       <p>$300 locks your category on a route mailing to about 5,000 homes. Pick an open spot below to hold it &mdash; we'll follow up with the invoice.</p>
+      <p style="margin-top:14px;font-size:15px;color:#9fb0bf;max-width:56ch;margin-left:auto;margin-right:auto;">Don't love your design? We revise it free until you sign off. Nothing prints without your approval. If a mailing is going to be delayed for any reason, you'll be notified.</p>
     </div>
 
     <div class="picker">
@@ -599,49 +628,6 @@
         <button class="btn btn-primary" type="submit" style="width:100%;">Send Message</button>
         <p class="picker-form-msg" id="contact-form-msg"></p>
       </form>
-    </div>
-  </div>
-</section>
-
-<section class="alt" id="faq">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow">FAQ</span>
-      <h2>Straight answers before you reserve.</h2>
-    </div>
-    <div class="faq">
-      <details open>
-        <summary>How do I know a competitor won't be on my card? <span class="plus">+</span></summary>
-        <p>Once a business reserves a spot in an industry category, that category is closed for that card. No other business in the same line of work is added to it.</p>
-      </details>
-      <details>
-        <summary>What locks in my spot? <span class="plus">+</span></summary>
-        <p>A paid invoice. Once that's in, your category on that card is yours.</p>
-      </details>
-      <details>
-        <summary>What if I want to be on both routes? <span class="plus">+</span></summary>
-        <p>You can reserve a spot on El Paseo, Sun City Palm Desert, or both. Each route is its own card and its own reservation.</p>
-      </details>
-      <details>
-        <summary>Do I need to design anything myself? <span class="plus">+</span></summary>
-        <p>No. We build your spot on the card and send it to you to approve before it goes to print.</p>
-      </details>
-      <details>
-        <summary>How many homes actually get the mailer? <span class="plus">+</span></summary>
-        <p>Around 5,000 homes per route, mailed by USPS &mdash; see the full mailing area report for <a href="images/el-paseo-mailing-area-report.pdf" target="_blank" rel="noopener">El Paseo</a> or <a href="images/sun-city-mailing-area-report.pdf" target="_blank" rel="noopener">Sun City Palm Desert</a>.</p>
-      </details>
-      <details>
-        <summary>Is this a franchise or a national directory? <span class="plus">+</span></summary>
-        <p>No. Local Spotlight is run by More Views Pro, a local marketing company. It's two real routes in the Coachella Valley right now, not a nationwide network.</p>
-      </details>
-      <details>
-        <summary>Do you guarantee results? <span class="plus">+</span></summary>
-        <p>No. We can tell you exactly how many homes get the card and when it mails. We don't promise a specific number of calls or customers from it.</p>
-      </details>
-      <details>
-        <summary>How do I reserve a spot? <span class="plus">+</span></summary>
-        <p>Scroll up and tap an open category on your route. That holds the spot and sends us your info &mdash; we'll follow up by email to arrange payment and lock it in.</p>
-      </details>
     </div>
   </div>
 </section>
