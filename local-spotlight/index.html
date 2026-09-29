@@ -250,11 +250,12 @@
   .card-spot{
     position:absolute;border:none;padding:0;cursor:pointer;border-radius:7px;
     background:rgba(10,92,70,.16);transition:background .12s ease;
+    display:flex;align-items:center;justify-content:center;
   }
   .card-spot:hover{background:rgba(10,92,70,.3);}
   .card-spot .card-spot-label{
-    position:absolute;left:6%;right:6%;bottom:6%;font-family:'JetBrains Mono';font-size:11px;
-    font-weight:700;letter-spacing:.03em;text-align:center;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.55);
+    font-family:'JetBrains Mono';font-size:11px;
+    font-weight:700;letter-spacing:.03em;text-align:center;color:#000;
     pointer-events:none;
   }
   .card-spot.pending{background:rgba(232,98,44,.26);cursor:not-allowed;}
