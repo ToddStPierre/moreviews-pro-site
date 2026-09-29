@@ -732,7 +732,7 @@
   function statusLabel(status) {
     if (status === "open") return "Open";
     if (status === "pending") return "Pending";
-    return "Reserved";
+    return "Sold";
   }
 
   async function loadSpots(route, options = {}) {
@@ -820,7 +820,7 @@
       legend.innerHTML = `
         <span class="lg-open"><i></i>Open — tap to hold it</span>
         <span class="lg-pending"><i></i>Pending</span>
-        <span class="lg-reserved"><i></i>Reserved</span>
+        <span class="lg-reserved"><i></i>Sold</span>
       `;
       gridBackEl.insertAdjacentElement("afterend", legend);
     }
