@@ -160,14 +160,40 @@
   .route-card .route-stat{font-family:'JetBrains Mono';color:#bfe9d8;font-size:14px;margin-top:4px;}
   .route-card p{color:#d6ece3;font-size:14.5px;margin-top:12px;}
   .route-report-link{
-    display:inline-flex;align-items:center;gap:6px;margin-top:16px;
-    font-family:'Inter';font-weight:700;font-size:14px;color:#bfe9d8;text-decoration:underline;
+    display:inline-flex;align-items:center;gap:8px;margin-top:20px;
+    font-family:'Inter';font-weight:700;font-size:14.5px;color:#0a5c46;text-decoration:none;
+    background:#fff;border-radius:999px;padding:11px 18px;transition:transform .15s ease;
   }
-  .route-report-link:hover{color:#fff;}
-  .route-map{
-    display:block;width:100%;height:auto;margin-top:14px;border-radius:12px;
-    border:1px solid rgba(255,255,255,.18);
+  .route-report-link:hover{transform:translateY(-1px);}
+
+  /* coming soon (La Quinta waitlist) */
+  .coming-soon-card{
+    margin-top:20px;background:var(--paper-tint);border:1.5px dashed var(--brand-bright);
+    border-radius:18px;padding:32px;
   }
+  @media (min-width:721px){ .coming-soon-card{padding:36px 40px;} }
+  .coming-soon-badge{
+    display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono';
+    font-weight:700;font-size:12px;letter-spacing:.04em;color:var(--accent);
+    background:var(--accent-soft);border-radius:999px;padding:6px 12px;
+  }
+  .coming-soon-card .route-name{font-family:'Sora';font-weight:700;font-size:22px;color:var(--ink);margin-top:14px;}
+  .coming-soon-card .route-stat{font-family:'JetBrains Mono';color:var(--brand-bright);font-size:14px;margin-top:4px;}
+  .coming-soon-card p{color:var(--ink-soft);font-size:14.5px;margin-top:12px;max-width:60ch;}
+  .coming-soon-card .btn{margin-top:20px;}
+  .waitlist-form{
+    display:none;margin-top:24px;padding-top:24px;border-top:1px solid var(--line);max-width:440px;
+  }
+  .waitlist-form.open{display:block;}
+  .waitlist-form .field{margin-top:14px;}
+  .waitlist-form .field:first-child{margin-top:0;}
+  .waitlist-form label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+  .waitlist-form input{
+    width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:10px;
+    font-family:'Inter';font-size:14.5px;background:#fff;
+  }
+  .waitlist-form input:focus{outline:2px solid var(--brand-bright);border-color:transparent;}
+  .waitlist-form button{margin-top:18px;}
 
   /* how it works */
   .steps{display:grid;gap:28px;}
@@ -496,15 +522,31 @@
         <div class="route-stat mono">4,972 homes</div>
         <p>Palm Desert's shopping and dining corridor. Restaurants, salons, boutiques and home services in the surrounding neighborhoods.</p>
         <a href="images/el-paseo-mailing-area-report.pdf" target="_blank" rel="noopener" class="route-report-link">Who this mailing reaches &rarr;</a>
-        <img class="route-map" src="images/el-paseo-mailing-area-map.jpg" alt="Map of the streets covered by the El Paseo Spotlight mailing route">
       </div>
       <div class="route-card">
         <div class="route-name">Sun City Palm Desert</div>
         <div class="route-stat mono">4,826 homes</div>
         <p>An active-adult community. Strong fit for home services, med spas, dental, financial advisors and estate planning.</p>
         <a href="images/sun-city-mailing-area-report.pdf" target="_blank" rel="noopener" class="route-report-link">Who this mailing reaches &rarr;</a>
-        <img class="route-map" src="images/sun-city-mailing-area-map.jpg" alt="Map of the streets covered by the Sun City Palm Desert Spotlight mailing route">
       </div>
+    </div>
+
+    <div class="coming-soon-card">
+      <span class="coming-soon-badge">COMING SOON</span>
+      <div class="route-name">La Quinta</div>
+      <div class="route-stat mono">~5,000 homes (est.)</div>
+      <p>Our next route, covering a mix of established La Quinta neighborhoods. Join the waiting list now and we'll reach out the moment spots open &mdash; before this one goes public.</p>
+      <button type="button" class="btn btn-primary" id="waitlist-toggle">Join the Waiting List</button>
+      <form id="waitlist-form" class="waitlist-form">
+        <input type="hidden" name="_subject" value="Local Spotlight: La Quinta waitlist signup">
+        <input type="hidden" name="route" value="La Quinta (waitlist)">
+        <div class="field"><label for="wl-name">Name</label><input id="wl-name" name="name" type="text" required></div>
+        <div class="field"><label for="wl-business">Business</label><input id="wl-business" name="business" type="text" required></div>
+        <div class="field"><label for="wl-email">Email</label><input id="wl-email" name="email" type="email" required></div>
+        <div class="field"><label for="wl-phone">Phone</label><input id="wl-phone" name="phone" type="tel"></div>
+        <button class="btn btn-primary" type="submit" style="width:100%;">Join Waiting List</button>
+        <p class="picker-form-msg" id="waitlist-form-msg"></p>
+      </form>
     </div>
   </div>
 </section>
@@ -962,6 +1004,47 @@
     } catch (err) {
       contactMsg.textContent = "Something went wrong. Call us instead: (760) 422-5475.";
       contactMsg.className = "picker-form-msg error";
+    }
+    submitBtn.disabled = false;
+  });
+
+  const waitlistToggle = document.getElementById("waitlist-toggle");
+  const waitlistForm = document.getElementById("waitlist-form");
+  const waitlistMsg = document.getElementById("waitlist-form-msg");
+  waitlistToggle.addEventListener("click", function () {
+    waitlistForm.classList.add("open");
+    waitlistToggle.style.display = "none";
+  });
+  waitlistForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const submitBtn = waitlistForm.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    waitlistMsg.textContent = "Sending…";
+    waitlistMsg.className = "picker-form-msg";
+    try {
+      const res = await fetch(NOTIFY_ENDPOINT, {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+          _subject: "Local Spotlight: La Quinta waitlist signup",
+          route: "La Quinta (waitlist)",
+          name: waitlistForm.name.value,
+          business: waitlistForm.business.value,
+          email: waitlistForm.email.value,
+          phone: waitlistForm.phone.value,
+        }),
+      });
+      if (res.ok) {
+        waitlistMsg.textContent = "You're on the list — we'll reach out when La Quinta spots open.";
+        waitlistMsg.className = "picker-form-msg success";
+        waitlistForm.reset();
+      } else {
+        waitlistMsg.textContent = "Something went wrong. Call us instead: (760) 422-5475.";
+        waitlistMsg.className = "picker-form-msg error";
+      }
+    } catch (err) {
+      waitlistMsg.textContent = "Something went wrong. Call us instead: (760) 422-5475.";
+      waitlistMsg.className = "picker-form-msg error";
     }
     submitBtn.disabled = false;
   });
