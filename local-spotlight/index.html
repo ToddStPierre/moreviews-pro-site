@@ -316,8 +316,18 @@
   }
   .card-spot.pending{background:rgba(232,98,44,.26);cursor:not-allowed;}
   .card-spot.pending:hover{background:rgba(232,98,44,.26);}
-  .card-spot.reserved{background:rgba(16,20,24,.32);cursor:not-allowed;}
+  .card-spot.reserved{background:rgba(16,20,24,.32);cursor:not-allowed;flex-direction:column;gap:3px;}
   .card-spot.reserved:hover{background:rgba(16,20,24,.32);}
+  .card-spot-stamp{width:56%;height:auto;display:block;pointer-events:none;flex:none;}
+  .card-spot-category{
+    font-family:'JetBrains Mono';font-size:10px;line-height:1.15;font-weight:700;
+    letter-spacing:.02em;text-align:center;color:#000;pointer-events:none;
+    width:100%;overflow-wrap:break-word;word-break:break-word;padding:0 2px;
+  }
+  @media (max-width:640px){
+    .card-spot-stamp{width:44%;}
+    .card-spot-category{font-size:8.5px;}
+  }
   .picker-card-legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:16px;font-size:12.5px;color:var(--ink-soft);}
   .picker-dims{text-align:center;margin-top:10px;font-size:13px;color:var(--ink-soft);}
   .picker-card-legend span{display:inline-flex;align-items:center;gap:6px;}
@@ -859,7 +869,12 @@
       const label = spotLabel(position, status, category);
       spot.setAttribute("aria-label", label);
       spot.title = label;
-      spot.innerHTML = `<span class="card-spot-label">${label}</span>`;
+      if (status === "open" || status === "pending") {
+        spot.innerHTML = `<span class="card-spot-label">${label}</span>`;
+      } else {
+        const soldCategory = category || `Spot ${position}`;
+        spot.innerHTML = `<img class="card-spot-stamp" src="images/sold-stamp.png" alt="" aria-hidden="true"><span class="card-spot-category">${soldCategory}</span>`;
+      }
       if (status === "open") {
         spot.type = "button";
         spot.addEventListener("click", () => openForm(route, position));
