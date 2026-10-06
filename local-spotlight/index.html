@@ -316,8 +316,8 @@
   }
   .card-spot.pending{background:rgba(232,98,44,.26);cursor:not-allowed;}
   .card-spot.pending:hover{background:rgba(232,98,44,.26);}
-  .card-spot.reserved{background:rgba(16,20,24,.32);cursor:not-allowed;flex-direction:column;gap:3px;}
-  .card-spot.reserved:hover{background:rgba(16,20,24,.32);}
+  .card-spot.sold{background:rgba(16,20,24,.32);cursor:not-allowed;flex-direction:column;gap:3px;}
+  .card-spot.sold:hover{background:rgba(16,20,24,.32);}
   .card-spot-stamp{width:56%;height:auto;display:block;pointer-events:none;flex:none;}
   .card-spot-category{
     font-family:'JetBrains Mono';font-size:10px;line-height:1.15;font-weight:700;
@@ -784,8 +784,9 @@
   let pendingPosition = null;
 
   function statusLabel(status) {
-    if (status === "open") return "Open";
-    if (status === "pending") return "Pending";
+    const s = (status || "").toLowerCase();
+    if (s === "open") return "Open";
+    if (s === "pending") return "Pending";
     return "Sold";
   }
 
@@ -831,12 +832,15 @@
     gridFrontEl.className = "picker-grid";
     gridBackEl.className = "picker-grid";
     positions.forEach(({ position, status, category }) => {
+      const statusKey = (status || "").toLowerCase() === "open" ? "open"
+        : (status || "").toLowerCase() === "pending" ? "pending"
+        : "reserved";
       const chip = document.createElement("div");
-      chip.className = `spot-chip ${status}`;
+      chip.className = `spot-chip ${statusKey}`;
       chip.innerHTML = category
         ? `${category}<span class="status">${statusLabel(status)}</span>`
         : `Spot ${position}<span class="status">${statusLabel(status)}</span>`;
-      if (status === "open") {
+      if (statusKey === "open") {
         chip.addEventListener("click", () => openForm(route, position));
       }
       (position <= 8 ? gridFrontEl : gridBackEl).appendChild(chip);
@@ -860,8 +864,11 @@
     positions.forEach(({ position, status, category }) => {
       const isFront = position <= 8;
       const box = layout.boxes[(position - 1) % 8];
-      const spot = document.createElement(status === "open" ? "button" : "div");
-      spot.className = `card-spot ${status}`;
+      const statusKey = (status || "").toLowerCase() === "open" ? "open"
+        : (status || "").toLowerCase() === "pending" ? "pending"
+        : "sold";
+      const spot = document.createElement(statusKey === "open" ? "button" : "div");
+      spot.className = `card-spot ${statusKey}`;
       spot.style.left = `${box.left}%`;
       spot.style.top = `${box.top}%`;
       spot.style.width = `${box.width}%`;
@@ -869,13 +876,13 @@
       const label = spotLabel(position, status, category);
       spot.setAttribute("aria-label", label);
       spot.title = label;
-      if (status === "open" || status === "pending") {
+      if (statusKey === "open" || statusKey === "pending") {
         spot.innerHTML = `<span class="card-spot-label">${label}</span>`;
       } else {
         const soldCategory = category || `Spot ${position}`;
         spot.innerHTML = `<img class="card-spot-stamp" src="images/sold-stamp.png" alt="" aria-hidden="true"><span class="card-spot-category">${soldCategory}</span>`;
       }
-      if (status === "open") {
+      if (statusKey === "open") {
         spot.type = "button";
         spot.addEventListener("click", () => openForm(route, position));
       }
