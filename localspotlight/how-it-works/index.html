@@ -178,6 +178,8 @@
   /* method */
   .method-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;}
   @media (max-width:820px){ .method-grid{grid-template-columns:1fr;} }
+  .method-grid-4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;}
+  @media (max-width:720px){ .method-grid-4{grid-template-columns:1fr;} }
   .method-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px;}
   .method-num{font-family:'JetBrains Mono';color:var(--brand);font-weight:700;font-size:13px;}
   .method-card h3{margin-top:10px;font-size:18px;}
@@ -462,16 +464,21 @@
       <h2>One card. One size. One flat price.</h2>
       <p>No tiers, no upsells, no fine print on what's included. Every spot on Local Spotlight works the same way.</p>
     </div>
-    <div class="method-grid">
+    <div class="method-grid method-grid-4">
       <div class="method-card">
         <span class="method-num mono">THE CARD</span>
-        <h3>11x6&Prime;, glossy, oversized</h3>
-        <p>Bigger than a standard postcard on purpose &mdash; it doesn't slip through a mail slot unnoticed, and it stands out against the rest of the day's mail.</p>
+        <h3>11x6&Prime;, glossy, oversized, two-sided</h3>
+        <p>Bigger than a standard postcard on purpose &mdash; it doesn't slip through a mail slot unnoticed. 16 spots total, 8 on the front and 8 on the back.</p>
       </div>
       <div class="method-card">
-        <span class="method-num mono">YOUR SPOT</span>
-        <h3>2.7&Prime; x 2.5&Prime;, $300 flat</h3>
-        <p>One ad spot, one industry, locked for the life of that card. No other business in your line of work can share this mailer with you.</p>
+        <span class="method-num mono">WHO IT REACHES</span>
+        <h3>Every home on the route, not a rented list</h3>
+        <p>Each route is mailed off a real USPS carrier-route report &mdash; every deliverable address in the zone, roughly 5,000 homes, not a purchased mailing list.</p>
+      </div>
+      <div class="method-card">
+        <span class="method-num mono">EXCLUSIVITY</span>
+        <h3>One business per industry, per card</h3>
+        <p>Reserve a spot and your industry is closed on that card for good. No competitor gets added later, no matter when they ask.</p>
       </div>
       <div class="method-card">
         <span class="method-num mono">THE DESIGN</span>
