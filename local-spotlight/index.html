@@ -245,6 +245,24 @@
   .math-anchor{max-width:640px;margin:24px auto 0;text-align:center;font-size:15.5px;color:var(--ink-soft);}
   .math-anchor strong{color:var(--brand);}
 
+  /* vs. coupon packs comparison */
+  .compare-table{max-width:760px;margin:0 auto;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;}
+  .compare-row{display:grid;grid-template-columns:1.1fr 1fr 1fr;}
+  .compare-row + .compare-row{border-top:1px solid var(--line);}
+  .compare-row.compare-head{background:var(--paper-tint);}
+  .compare-cell{padding:18px 20px;font-size:14.5px;color:var(--ink-soft);}
+  .compare-row.compare-head .compare-cell{font-family:'JetBrains Mono';font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--ink-soft);}
+  .compare-cell.compare-label{font-family:'Sora';font-size:14.5px;font-weight:700;color:var(--ink);}
+  .compare-cell.compare-spotlight{background:var(--brand-soft);color:var(--ink);font-weight:500;border-left:1px solid var(--line);border-right:1px solid var(--line);}
+  .compare-row.compare-head .compare-cell.compare-spotlight{color:var(--brand);}
+  @media (max-width:640px){
+    .compare-row{grid-template-columns:1fr;}
+    .compare-cell.compare-spotlight{border-left:none;border-right:none;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+    .compare-row.compare-head{display:none;}
+    .compare-cell::before{content:attr(data-label);display:block;font-family:'JetBrains Mono';font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px;}
+    .compare-cell.compare-label::before{content:'';margin:0;}
+  }
+
   /* faq */
   .faq{max-width:820px;}
   details{border-bottom:1px solid var(--line);padding:20px 0;}
@@ -572,6 +590,43 @@
       <div class="item"><span class="n mono">1</span><span class="l">business per category</span></div>
     </div>
     <p class="math-anchor">Mailing this route on your own runs $1,576.00 in print and $1,300.00 in postage, a total of $2,876.00. Your share as one of 16 businesses is <strong>just $300</strong>.</p>
+  </div>
+</section>
+
+<section id="compare">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">LOCAL SPOTLIGHT VS. COUPON PACKS</span>
+      <h2>Not another coupon in a pile of coupons.</h2>
+      <p>Shared mail isn't new &mdash; coupon packs have been doing it for decades. Here's how a Local Spotlight spot is actually different.</p>
+    </div>
+    <div class="compare-table">
+      <div class="compare-row compare-head">
+        <div class="compare-cell"></div>
+        <div class="compare-cell compare-spotlight">Local Spotlight</div>
+        <div class="compare-cell">Coupon Packs</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell compare-label">Price shown</div>
+        <div class="compare-cell compare-spotlight" data-label="Local Spotlight">$300 flat, shown right here &mdash; no call needed to find out what it costs.</div>
+        <div class="compare-cell" data-label="Coupon Packs">Usually not published. You call in and get quoted a price.</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell compare-label">Contract</div>
+        <div class="compare-cell compare-spotlight" data-label="Local Spotlight">One mailing, pay once. No subscription, no auto-renew.</div>
+        <div class="compare-cell" data-label="Coupon Packs">Often sold as a multi-month or annual commitment.</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell compare-label">Competitors on the same piece</div>
+        <div class="compare-cell compare-spotlight" data-label="Local Spotlight">One business per industry, guaranteed &mdash; locked the moment you reserve.</div>
+        <div class="compare-cell" data-label="Coupon Packs">More than one business in your category is common. No exclusivity.</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell compare-label">Format</div>
+        <div class="compare-cell compare-spotlight" data-label="Local Spotlight">A dedicated 11&Prime;x6&Prime; postcard. Your ad is the mailer, not a clipping inside it.</div>
+        <div class="compare-cell" data-label="Coupon Packs">One discount coupon among dozens, bundled in an envelope or booklet.</div>
+      </div>
+    </div>
   </div>
 </section>
 
